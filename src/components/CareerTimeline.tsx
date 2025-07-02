@@ -1,4 +1,6 @@
-import { Building2, GraduationCap, Cloud, Shield, Server, Cpu, HardDrive, Network } from "lucide-react";
+import { Building2, GraduationCap, Cloud, Shield, Server, Cpu } from "lucide-react";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 const CareerTimeline = () => {
   const experiences = [
@@ -16,7 +18,7 @@ const CareerTimeline = () => {
       description: "Taught Cisco CCNA while working at UPC. After a year and a half, awarded Cisco's Expert Instructor Excellence Badge for maintaining an 80%+ student pass rate.",
       icon: GraduationCap,
       color: "orange",
-      image: "CCNA-expert-instructor.jpg"
+      image: "https://images.banszky.men/cv/CCNA-expert-instructor.jpg"
     },
     {
       company: "AtoS",
@@ -32,7 +34,10 @@ const CareerTimeline = () => {
       description: "Had two roles: managing a large African IP backbone with UK-based data centers, and as a Cloud Integration Engineer. Trained in Espoo, Finland, then led full on-site deployment in Chișinău, Moldova.",
       icon: Cloud,
       color: "orange",
-      image: "nokiacloud.jpg"
+      image: [
+        "https://images.banszky.men/cv/01NokiaCNF-test.jpeg",
+        "https://images.banszky.men/cv/02NokiaCNA-test.jpeg"
+      ]
     },
     {
       company: "IBM",
@@ -40,7 +45,11 @@ const CareerTimeline = () => {
       description: "Worked for almost 4 years in a global team managing 7 data centers under a 'follow the sun' model. Extensive work with Vyatta, pfSense, Cisco ASA, and migrated Core DC ASA firewalls to Cisco Firepower.",
       icon: Server,
       color: "orange",
-      image: ["IBM1.jpg", "IBM2.jpg", "IBM3.jpg"]
+      image: [
+        "https://images.banszky.men/cv/01IBM.jpeg",
+        "https://images.banszky.men/cv/02IBM.jpeg",
+        "https://images.banszky.men/cv/07IBM.jpeg"
+      ]
     },
     {
       company: "Cloudbasesolutions",
@@ -55,7 +64,7 @@ const CareerTimeline = () => {
       role: "Proxmox Server: Security & Networking Virtualization",
       description: `Hardware Specs:
 * CPU: Intel i7 (14th 14700k, 20 cores for robust VM performance)
-* RAM: 128GB DDR4/DDR5 (ECC preferred for stability in virtualization)
+* RAM: 128GB DDR5 
 * Storage: 10TB HDD 1x4TB (for NAS) + 1x2TB SSD (for ISO images) + 1X4TBB NVMe SSD (for Proxmox OS and VM storage cache)
 * External storage: 12TB for Backup
 * Networking: Dual 1GbE NICs (upgradable to 10GbE for high-speed networking VMs) + PCIe Wi-Fi card (for wireless testing)
@@ -63,11 +72,11 @@ const CareerTimeline = () => {
 
 Proxmox VE Configuration:
 * Hypervisor: Proxmox VE (latest, 8.3.1) for managing VMs and containers
-* Storage Setup: ZFS on HDDs for data integrity, SSD for fast VM/container storage
-* Networking: VLANs configured for isolated security and networking labs (e.g., DMZ, LAN, IoT, Guest). Virtual bridges for VM-to-VM communication.`,
+* Storage Setup: NVMe SSD for fast VM/container storage
+* Networking: VLANs + pfSense configured for isolated security and networking labs (e.g., DMZ, SEC infected VMs, LAN).
       icon: Cpu,
       color: "orange",
-      image: null
+      image: "https://images.banszky.men/cv/01Homelab.jpeg"
     }
   ];
 
@@ -101,41 +110,71 @@ Proxmox VE Configuration:
                   
                   {exp.image && (
                     <div className="flex flex-wrap gap-4">
-                      {Array.isArray(exp.image) ? (
-                        exp.image.map((img, imgIndex) => (
-                          <div key={imgIndex} className="bg-gray-800/50 rounded-lg p-4 border border-gray-600">
-                            <div className="w-32 h-24 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center">
-                              <span className="text-gray-400 text-sm">{img}</span>
+                      {(Array.isArray(exp.image) ? exp.image : [exp.image]).map((img, imgIndex) => (
+                        <Dialog key={imgIndex}>
+                          <DialogTrigger>
+                            <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-600 cursor-pointer hover:border-gray-500 transition-colors">
+                              <div className="w-32 h-24 rounded-lg overflow-hidden">
+                                <img
+                                  src={img}
+                                  alt="Experience Thumbnail"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
                             </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-600">
-                          <div className="w-32 h-24 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center">
-                            <span className="text-gray-400 text-sm">{exp.image}</span>
+                          </DialogTrigger>
+                          <DialogContent style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
+                            <DialogHeader>
+                              <DialogTitle>Image Viewer</DialogTitle>
+                            </DialogHeader>
+                            <div className="w-full h-full flex items-center justify-center">
+                              {Array.isArray(exp.image) ? (
+                                <Carousel className="w-full max-w-4xl">
+                                  <CarouselContent>
+                                    {exp.image.map((image, idx) => (
+                                      <CarouselItem key={idx}>
+                                        <img 
+                                          src={image} 
+                                          alt={`Experience Image ${idx + 1}`} 
+                                          className="w-full h-auto max-h-[80vh] object-contain"
+                                        />
+                                      </CarouselItem>
+                                    ))}
+                                  </CarouselContent>
+                                  <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
+                                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
+                                </Carousel>
+                              ) : (
+                                <img 
+                                  src={img} 
+                                  alt="Experience Image" 
+                                  className="w-full h-auto max-h-[80vh] object-contain"
+                                />
+                              )}
                             </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="mt-16 text-center">
-            <div className="bg-gray-900/40 backdrop-blur-lg rounded-2xl p-8 border border-gray-700">
-              <h3 className="text-2xl font-bold mb-4 text-orange-500">Summary</h3>
-              <p className="text-gray-300 leading-relaxed max-w-4xl mx-auto text-lg">
-                I bring solid experience in <span className="text-orange-400 font-semibold">routing, switching, firewalls, data centers, and cloud integration</span>, 
-                with a strong focus on <span className="text-orange-500 font-semibold">doing things properly and efficiently</span>.
-              </p>
             </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <div className="bg-gray-900/40 backdrop-blur-lg rounded-2xl p-8 border border-gray-700">
+            <h3 className="text-2xl font-bold mb-4 text-orange-500">Summary</h3>
+            <p className="text-gray-300 leading-relaxed max-w-4xl mx-auto text-lg">
+              I bring solid experience in <span className="text-orange-400 font-semibold">routing, switching, firewalls, data centers, and cloud integration</span>, 
+              with a strong focus on <span className="text-orange-500 font-semibold">doing things properly and efficiently</span>.
+            </p>
           </div>
         </div>
-      </section>
-    );
-  };
+      </div>
+    </section>
+  );
+};
 
-  export default CareerTimeline;
+export default CareerTimeline;

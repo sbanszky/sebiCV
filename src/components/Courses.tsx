@@ -1,4 +1,5 @@
 import { GraduationCap, Award, BookOpen, Shield, Cloud, Server } from "lucide-react";
+import { useState } from "react";
 
 const Courses = () => {
   const courses = [
@@ -11,7 +12,7 @@ const Courses = () => {
       achievement: "Expert Instructor Excellence Badge - 80%+ student pass rate"
     },
     {
-      title: "Network Security Fundamentals",
+      title: "Network Security",
       institution: "Self-taught & Industry Experience",
       description: "Advanced security concepts including firewall management, intrusion detection, and security policy implementation.",
       icon: Shield,
@@ -20,7 +21,7 @@ const Courses = () => {
     },
     {
       title: "Cloud Integration & Virtualization",
-      institution: "Nokia Training Center, Espoo",
+      institution: "Nokia Training Center, Espoo, Finland",
       description: "OpenStack cloud deployment, HP blade infrastructure management, and EMC storage integration.",
       icon: Cloud,
       duration: "Intensive training",
