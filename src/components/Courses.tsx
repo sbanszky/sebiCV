@@ -4,7 +4,7 @@ import { useState } from "react";
 const Courses = () => {
   const courses = [
     {
-      title: "Cisco CCNA Routing & Switching",
+      title: "Cisco CCNA Instructor",
       institution: "Polytechnic University of Timișoara",
       description: "Comprehensive networking fundamentals course covering routing protocols, switching technologies, and network troubleshooting.",
       icon: GraduationCap,
